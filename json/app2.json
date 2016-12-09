@@ -1,0 +1,24 @@
+{
+  "devtools_port": 9090,
+  "startup_app": {
+    "name": "excel-poc",
+    "url": "http://192.168.85.251/embx-b/index.php",
+    "uuid": "embx-a",
+    "applicationIcon": "http://192.168.85.251/embx-b/images/embx-a-openfin.ico",
+    "autoShow": true,
+    "defaultWidth": 1100,
+    "defaultHeight": 720,
+    "defaultTop": 100,
+    "defaultLeft": 100
+  },
+  "runtime": {
+    "arguments": "",
+    "version": "stable"
+  },
+  "shortcut": {
+    "company": "OpenFin",
+    "description": "excel-api-example",
+    "icon": "http://192.168.85.251/embx-b/images/embx-b-openfin.ico",
+    "name": "excel-poc"
+  }
+}
