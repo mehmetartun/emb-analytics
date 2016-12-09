@@ -4,9 +4,9 @@ define("MYSQL_HOST","127.0.0.1");
 define("MYSQL_USER","root");
 define("MYSQL_PASS","emb");
 define("MYSQL_DB","embondsworking");
-define("AUDIO_FILE_PATH",'~mehmetartun/emb-analytics/downloads/');
-define("EMB_SOURCE_FILE_DIRECTORY","~mehmetartun/emb-analytics/source_files/");
-define("EMB_UPLOAD_DIRECTORY","~mehmetartun/emb-analytics/uploads/");
+define("AUDIO_FILE_PATH",'/Users/mehmetartun/Sites/emb-analytics/downloads/');
+define("EMB_SOURCE_FILE_DIRECTORY","/Users/mehmetartun/Sites/emb-analytics/source_files/");
+define("EMB_UPLOAD_DIRECTORY","/Users/mehmetartun/Sites/emb-analytics/uploads/");
 define("TESTISIN","XSTEST123456");
 
 
@@ -19,7 +19,7 @@ $cwd = getcwd();
 
 
 
-ini_set('upload_tmp_dir','~mehmetartun/emb-analytics/uploads/');
+ini_set('upload_tmp_dir','/Users/mehmetartun/Sites/emb-analytics/uploads/');
 
 // Create connection
 //$conn = mysqli_connect($servername, $username, $password,$database);
