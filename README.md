@@ -1,7 +1,7 @@
 # Analytics for EMB
 This software processes log data from transaction data at EMB.
 ## Setup
-Create a database using the schema provided in `sgl/databaseSchema.sql`. Then, upload the bond definitions and currency definitions found in `bonds.sql` and `currencies.sql`. 
+Create a database using the schema provided in `sql/databaseSchema.sql`. Then, upload the bond definitions and currency definitions found in `bonds.sql` and `currencies.sql`. 
 
 In the second step you need to modify the file in `utils/embx_dbconn.php` where you set some upload and download directories together with the database name, username and password.
 
