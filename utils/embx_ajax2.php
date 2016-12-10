@@ -21,7 +21,8 @@ switch ($pagefunction) {
 		
 		if ($exists) {
 			echo "The file <strong>" . $filename . "</strong> appears to be already processed";
-		} else {
+		} 
+		else {
 			$rs     = EMBXDB::get()->query("update processed set processed = 1 where filename='" . $filename . "' ");
 			$result = embx_processfile($filename);
 			echo $result;
@@ -36,13 +37,11 @@ switch ($pagefunction) {
 			$uploaddir = './uploads/';
 			foreach($_FILES as $file)
 			{
-				if(move_uploaded_file($file['tmp_name'], $uploaddir .basename($file['name'])))
-				{
+				if(move_uploaded_file($file['tmp_name'], $uploaddir .basename($file['name']))) {
 					$files[] = $uploaddir .$file['name'];
 				}
-				else
-				{
-					$error = true;
+				else {
+					$error   = true;
 				}
 			}
 			$data = ($error) ? array('error' => 'There was an error uploading your files') : array('files' => $files);
