@@ -108,7 +108,8 @@ switch ($pagefunction) {
 							<dd class='accordion-navigation'>
 							<a href='#rfq".$rfq["rfqid"]."'>".$rfqtype." ".substr($rfq['actiontime'],11,5)." 
 								<strong>".$rfq["user"]."</strong> 
-								<i class='fi-arrow-right'></i> <strong>".$rfq["responders"]."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>"
+								<i class='fi-arrow-right'></i>
+								 <strong>".$rfq["responders"]."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>"
 								.$bondccy." ".number_format($rfq["size"],0).
 								"</em> of <strong>".$bondname."</strong>
 							</a><div id='rfq".$rfq["rfqid"]."' class='content'>";
@@ -131,14 +132,16 @@ switch ($pagefunction) {
 					}
 					
 					
-					$result .= "<tr><td>".substr($rfq["actiontime"],11,8)."</td><td>".$rfq["action"]."</td><td>".$rfq["user"]."</td>
+					$result .=
+						"<tr><td>".substr($rfq["actiontime"],11,8)."</td><td>".$rfq["action"]."</td><td>".$rfq["user"]."</td>
 						<td style = 'text-align: right;'>"
 					.number_format($size,0)."</td><td style = 'text-align: right;'>"
 					.$bidprice."</td><td style = 'text-align: right;'>"
 					.$askprice."</td>";
 				}
 				if ($rfq['action'] == 'rfq/revoke'){
-					$result .= "<tr><td>".substr($rfq["actiontime"],11,8)."</td><td>".$rfq["action"]."</td><td>".$rfq["user"]."</td>
+					$result .= "<tr><td>".substr($rfq["actiontime"],11,8)."</td><td>".
+						$rfq["action"]."</td><td>".$rfq["user"]."</td>
 					<td></td><td></td><td></td>";
 				}
 				if ($rfq['action'] == 'rfq/counter'){
@@ -152,7 +155,8 @@ switch ($pagefunction) {
 					} else {
 						$askprice = number_format($rfq["askprice"],4);
 					}
-					$result .= "<tr><td>".substr($rfq["actiontime"],11,8)."</td><td>".$rfq["action"]."</td><td>".$rfq["user"]."</td>
+					$result .= "<tr><td>".substr($rfq["actiontime"],11,8)."</td><td>".$rfq["action"].
+						"</td><td>".$rfq["user"]."</td>
 						<td style = 'text-align: right;'>"
 					.number_format($rfq['size'],0)."</td><td style = 'text-align: right;'>"
 					.$bidprice."</td><td style = 'text-align: right;'>"
@@ -160,7 +164,8 @@ switch ($pagefunction) {
 										
 				}
 				if ($rfq['action'] == 'rfq/timeout'){
-					$result .= "<tr><td>".substr($rfq["actiontime"],11,8)."</td><td>".$rfq["action"]."</td><td colspan=4></td></tr>";
+					$result .= "<tr><td>".substr($rfq["actiontime"],11,8).
+						"</td><td>".$rfq["action"]."</td><td colspan=4></td></tr>";
 				}
 				if ($rfq['action'] == 'rfq/accept'){
 					$numtrades = $numtrades+1;
@@ -174,13 +179,15 @@ switch ($pagefunction) {
 						$tradetext = " buys from " ;
 					}
 
-					$result .= "<tr><td>".substr($rfq["actiontime"],11,8)."</td><td>".$rfq["action"]."</td><td>".$rfq["user"]."</td>
+					$result .= "<tr><td>".substr($rfq["actiontime"],11,8).
+						"</td><td>".$rfq["action"]."</td><td>".$rfq["user"]."</td>
 						<td style = 'text-align: right;'>"
 					.number_format($rfq['size'],0)."</td><td style = 'text-align: right;'>"
 					.$bidprice."</td><td style = 'text-align: right;'>"
 					.$askprice."</td>";
 					$result .= "<tr>".substr($rfq["actiontime"],11,8)."<td></td>
-						<td><strong>trade</strong></td><td colspan=4>".$rfq["user"].$tradetext.$rfq["giveruser"]."</td></tr>";
+						<td><strong>trade</strong></td><td colspan=4>".
+						$rfq["user"].$tradetext.$rfq["giveruser"]."</td></tr>";
 					
 				}
 				$prevrfqid = $rfq['rfqid'];
@@ -196,7 +203,8 @@ switch ($pagefunction) {
 		$tradingday = $_GET["tradingday"];
 		//$rfqids = embx_sql("select distinct rfqid from rfq where date(actiontime) = '".$tradingday."'");
 		$rfqs = embx_sql("select * from rfq where date(actiontime) = '".$tradingday."' order by rfqid asc, actiontime asc");
-		$rfqswithtrades = embx_sql("select rfqid from rfq where date(actiontime) = '".$tradingday."' and action='rfq/accept' order by rfqid asc, actiontime asc");
+		$rfqswithtrades = embx_sql("select rfqid from rfq where date(actiontime) = '".$tradingday.
+			"' and action='rfq/accept' order by rfqid asc, actiontime asc");
 		$result = "";
 		$numrfqs = 0;
 		$numtrades = 0;
@@ -247,7 +255,8 @@ switch ($pagefunction) {
 					}
 					
 					if ($_GET["bringmarketsnapshot"] == 'true'){
-						$marketsnapshot = embx_marketstatus(substr($rfq['actiontime'],0,10),substr($rfq['actiontime'],11,8),$rfq['isin']);
+						$marketsnapshot = 
+							embx_marketstatus(substr($rfq['actiontime'],0,10),substr($rfq['actiontime'],11,8),$rfq['isin']);
 					} else {
 						$marketsnapshot = '';
 					}
@@ -258,7 +267,8 @@ switch ($pagefunction) {
 							<a href='#rfq".$rfq["rfqid"]."' >".$rfqtype." ".substr($rfq['actiontime'],11,5)." 
 								<strong>".$rfq["user"]."</strong> 
 								<i class='fi-arrow-right'></i> <strong>".$rfq["responders"]."</strong> ".$tradeindicator."<br/>
-								<span class='label' style='background-color:#666666; color: #dddddd; width: 80px;'>".$rfqid."</span>&nbsp;&nbsp; <em>"
+								<span class='label' style='background-color:#666666; color: #dddddd; width: 80px;'>".
+								$rfqid."</span>&nbsp;&nbsp; <em>"
 								.$bondccy." ".number_format($rfq["size"],0).
 								"</em> of <strong>".$bondname."</strong> 
 							</a><div id='rfq".$rfq["rfqid"]."' class='content'>";

@@ -27,6 +27,11 @@ switch ($pagefunction) {
 				embx_sql("delete from trades where date(tradetime) = '".$tradingday."'");
 				echo "Reset Trades Table";
 			break;
+			case "resetsnapshottable":
+				embx_sql("delete from snapshot where date(actiontime) = '".$tradingday."'");
+				echo "Reset Snapshot Table";
+			break;
+
 			case "resetlogfilestable":
 				embx_sql("update processed set processed=0 
 						where date(datetime_from) = '".$tradingday."' and 

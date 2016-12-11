@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 10, 2016 at 04:14 PM
--- Server version: 5.7.9
+-- Host: localhost
+-- Generation Time: Dec 11, 2016 at 08:05 PM
+-- Server version: 5.7.16
 -- PHP Version: 5.5.36
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `embondsworking`
+-- Database: `embonds`
 --
 
 -- --------------------------------------------------------
@@ -93,7 +93,8 @@ CREATE TABLE `orders` (
   `filltype` text,
   `anonymity` text,
   `logid` int(11) DEFAULT NULL,
-  `action` text NOT NULL
+  `action` text NOT NULL,
+  `sysauto` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -120,7 +121,8 @@ CREATE TABLE `orderstemp` (
   `filltype` text,
   `anonymity` text,
   `logid` int(11) DEFAULT NULL,
-  `action` text NOT NULL
+  `action` text NOT NULL,
+  `sysauto` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -162,14 +164,14 @@ CREATE TABLE `quotesummary` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `raw`
+-- Table structure for table `raw_delete`
 --
 
-CREATE TABLE `raw` (
+CREATE TABLE `raw_delete` (
   `id` int(11) NOT NULL,
   `line` text NOT NULL,
   `processed` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -216,59 +218,19 @@ CREATE TABLE `rfq` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rfqsec`
+-- Table structure for table `snapshot`
 --
 
-CREATE TABLE `rfqsec` (
+CREATE TABLE `snapshot` (
   `id` int(11) NOT NULL,
-  `rfqid` int(11) DEFAULT NULL,
-  `action` text NOT NULL,
-  `actiontime` datetime NOT NULL,
-  `user` text,
-  `counterparty` text,
-  `size` double DEFAULT NULL,
-  `bidprice` double DEFAULT NULL,
-  `askprice` double DEFAULT NULL,
-  `tradeprice` double DEFAULT NULL,
-  `rfqtype` text,
-  `content` text,
-  `logid` int(11) DEFAULT NULL,
-  `isin` text,
-  `responders` text,
-  `responderuser` text,
-  `respondercounterparty` text,
-  `tradedirection` text,
-  `giveruser` text,
-  `givercounterparty` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `rfqu`
---
-
-CREATE TABLE `rfqu` (
-  `id` int(11) NOT NULL,
-  `rfqid` int(11) DEFAULT NULL,
-  `action` text NOT NULL,
-  `actiontime` datetime NOT NULL,
-  `user` text,
-  `counterparty` text,
-  `size` double DEFAULT NULL,
-  `bidprice` double DEFAULT NULL,
-  `askprice` double DEFAULT NULL,
-  `tradeprice` double DEFAULT NULL,
-  `rfqtype` text,
-  `content` text,
-  `logid` int(11) DEFAULT NULL,
-  `isin` text,
-  `responders` text,
-  `responderuser` text,
-  `respondercounterparty` text,
-  `tradedirection` text,
-  `giveruser` text,
-  `givercounterparty` text
+  `activity` varchar(16) NOT NULL,
+  `activityid` int(11) NOT NULL,
+  `direction` varchar(4) DEFAULT NULL,
+  `ordertype` varchar(16) DEFAULT NULL,
+  `size` double(20,5) DEFAULT NULL,
+  `price` double(20,5) DEFAULT NULL,
+  `user` varchar(16) DEFAULT NULL,
+  `actiontime` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -357,9 +319,9 @@ ALTER TABLE `quotesummary`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `raw`
+-- Indexes for table `raw_delete`
 --
-ALTER TABLE `raw`
+ALTER TABLE `raw_delete`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -375,15 +337,9 @@ ALTER TABLE `rfq`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `rfqsec`
+-- Indexes for table `snapshot`
 --
-ALTER TABLE `rfqsec`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `rfqu`
---
-ALTER TABLE `rfqu`
+ALTER TABLE `snapshot`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -400,7 +356,7 @@ ALTER TABLE `trades`
 -- AUTO_INCREMENT for table `bonds`
 --
 ALTER TABLE `bonds`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=727;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=729;
 --
 -- AUTO_INCREMENT for table `currencies`
 --
@@ -410,31 +366,31 @@ ALTER TABLE `currencies`
 -- AUTO_INCREMENT for table `endofday`
 --
 ALTER TABLE `endofday`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32768;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=197000;
 --
 -- AUTO_INCREMENT for table `orderstemp`
 --
 ALTER TABLE `orderstemp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `processed`
 --
 ALTER TABLE `processed`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `quotesummary`
 --
 ALTER TABLE `quotesummary`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `raw`
+-- AUTO_INCREMENT for table `raw_delete`
 --
-ALTER TABLE `raw`
+ALTER TABLE `raw_delete`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `rejects`
@@ -445,22 +401,17 @@ ALTER TABLE `rejects`
 -- AUTO_INCREMENT for table `rfq`
 --
 ALTER TABLE `rfq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 --
--- AUTO_INCREMENT for table `rfqsec`
+-- AUTO_INCREMENT for table `snapshot`
 --
-ALTER TABLE `rfqsec`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `rfqu`
---
-ALTER TABLE `rfqu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `snapshot`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `trades`
 --
 ALTER TABLE `trades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

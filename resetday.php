@@ -106,25 +106,23 @@ include("utils/embx_functions.php");
 				<div class='small-12 columns'>
 					For <strong><span id='tradingdayselected'><span style='color: #aaaaaa;' >Select Trading Day</span></span></strong>
 				</div>
-				<div class='small-12 columns'>
-					End of Day table<br>
-				<a href='#' class='button tiny disabled resetbutton' id='resetendofdaytable'>Clear End of Day</a>
+				<div class='small-6 columns'>
+				<a href='#' class='button  disabled resetbutton expand' id='resetendofdaytable'>Clear End of Day</a>
 				</div>
-				<div class='small-12 columns'>
-					Orders table<br>
-				<a href='#' class='button tiny disabled resetbutton' id='resetorderstable'>Clear Orders</a>
+				<div class='small-6 columns'>
+				<a href='#' class='button  disabled resetbutton expand' id='resetorderstable'>Clear Orders</a>
 				</div>
-				<div class='small-12 columns'>
-					RFQs table<br>
-				<a href='#' class='button tiny disabled resetbutton' id='resetrfqstable'>Clear RFQs</a>
+				<div class='small-6 columns'>
+				<a href='#' class='button  disabled resetbutton expand' id='resetrfqstable'>Clear RFQs</a>
 				</div>
-				<div class='small-12 columns'>
-					Trades table<br>
-				<a href='#' class='button tiny disabled resetbutton' id='resettradestable'>Clear Trades</a>
+				<div class='small-6 columns'>
+				<a href='#' class='button  disabled resetbutton expand' id='resettradestable'>Clear Trades</a>
 				</div>
-				<div class='small-12 columns'>
-					Logfiles table<br>
-				<a href='#' class='button tiny disabled resetbutton' id='resetlogfilestable'>Clear Log Files</a>
+				<div class='small-6 columns'>
+				<a href='#' class='button  disabled resetbutton expand' id='resetlogfilestable'>Clear Log Files</a>
+				</div>
+				<div class='small-6 columns'>
+				<a href='#' class='button  disabled resetbutton expand' id='resetsnapshottable'>Clear Snapshot</a>
 				</div>
 
 				
@@ -163,8 +161,11 @@ include("utils/embx_functions.php");
 			$('#resetrfqstable').html('Clear RFQs for '+$('#tradingday').val());	
 			$('#resettradestable').removeClass('disabled');
 			$('#resettradestable').html('Clear Trades for '+$('#tradingday').val());	
+			$('#resetsnapshottable').removeClass('disabled');
+			$('#resetsnapshottable').html('Clear Snapshots for '+$('#tradingday').val());	
 			$('#resetlogfilestable').removeClass('disabled');
 			$('#resetlogfilestable').html('Clear Log Files for '+$('#tradingday').val());	
+			$('.resetbutton').removeClass('alert');
 		});
 		$('.resetbutton').click(function(){
 			var thisid = this.id;

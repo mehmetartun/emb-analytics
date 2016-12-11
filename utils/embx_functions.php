@@ -32,6 +32,7 @@ function embx_lookup($table,$key_name,$key_value,$lookup_name){
 }
 
 function embx_processfile($filename) {
+	$rs = EMBXDB::get()->query("truncate orderstemp");
 	$rs = EMBXDB::get()->query("truncate temp");
 	$f = embx_lookup("processed","filename","'". $filename . "'" ,"id");
 	$fileid = $f;
@@ -75,7 +76,7 @@ function embx_processfile($filename) {
 									reason,endtime,ordertype,timeinforce,filltype,anonymity,logid,action
 									 from orderstemp");
 		
-		$rs = EMBXDB::get()->query("truncate orderstemp");
+		//$rs = EMBXDB::get()->query("truncate orderstemp");
 									
 		return "<strong>".$filename."</strong> has been processed with ".$i." lines.";
 	
@@ -376,6 +377,7 @@ function embx_order_add($time_1, $user, $counterparty, $content, $logid){
 		$beg = strpos($content,' from ')+6;
 		$end = strpos($content,' ',$beg);
 		$username = substr($content,$beg,$end-$beg);
+		$sysauto = 1;
 	}
 
 	$beg = strpos($content, '[');
@@ -425,58 +427,100 @@ function embx_order_add($time_1, $user, $counterparty, $content, $logid){
 	if ($ordertype[0] == "FoK") {
 		if ($user == 'system'){
 			$thereason = 'trdrem-';
+			$sql = "insert into orderstemp (orderid, logid, username, counterparty, isin, 
+			side, quotetype, size, price, ordertime, endtime, reason, ordertype, 
+			timeinforce, filltype, anonymity,  action, sysauto) values 
+			(" .
+			$orderid . ", " .
+				$logid . ", " .
+					"'" . $username . "', " .
+						"'" . $counterparty . "', " .
+							"'" . $isin . "', " .
+								"'" . $side . "', " .
+									"'" . $quotetype . "', " .
+										"" . $size. ", " .
+											"" . $price . ", " .
+												"'" . $time_1 . "', " . "'" . $time_1 . "', " . "'FoK'," .
+													"'" . $ordertype[2] . "', " .
+														"'" . $ordertype[0] . "', " .
+															"'" . $ordertype[3] . "', " .
+																"'" . $ordertype[1] . "', " .
+																	"'" . $thereason . $logid . "'" .
+																		" ,1)";
 		} else {
 			$thereason = 'add-';
+			$sql = "insert into orderstemp (orderid, logid, username, counterparty, isin, 
+			side, quotetype, size, price, ordertime, endtime, reason, ordertype, 
+			timeinforce, filltype, anonymity,  action) values 
+			(" .
+			$orderid . ", " .
+				$logid . ", " .
+					"'" . $username . "', " .
+						"'" . $counterparty . "', " .
+							"'" . $isin . "', " .
+								"'" . $side . "', " .
+									"'" . $quotetype . "', " .
+										"" . $size. ", " .
+											"" . $price . ", " .
+												"'" . $time_1 . "', " . "'" . $time_1 . "', " . "'FoK'," .
+													"'" . $ordertype[2] . "', " .
+														"'" . $ordertype[0] . "', " .
+															"'" . $ordertype[3] . "', " .
+																"'" . $ordertype[1] . "', " .
+																	"'" . $thereason . $logid . "'" .
+																		" )";
 		}
-		$sql = "insert into orderstemp (orderid, logid, username, counterparty, isin, 
-		side, quotetype, size, price, ordertime, endtime, reason, ordertype, 
-		timeinforce, filltype, anonymity,  action) values 
-		(" .
-		$orderid . ", " .
-			$logid . ", " .
-				"'" . $username . "', " .
-					"'" . $counterparty . "', " .
-						"'" . $isin . "', " .
-							"'" . $side . "', " .
-								"'" . $quotetype . "', " .
-									"" . $size. ", " .
-										"" . $price . ", " .
-											"'" . $time_1 . "', " . "'" . $time_1 . "', " . "'FoK'," .
-												"'" . $ordertype[2] . "', " .
-													"'" . $ordertype[0] . "', " .
-														"'" . $ordertype[3] . "', " .
-															"'" . $ordertype[1] . "', " .
-																"'" . $thereason . $logid . "'" .
-																	" )";
+
 		
 	}
 	else
 	{
 		if ($user == 'system'){
 			$thereason = 'trdrem-';
+			$sql = "insert into orderstemp (orderid, logid, username, counterparty, isin, 
+			side, quotetype, size, price, ordertime, ordertype, 
+			timeinforce, filltype, anonymity,  action, sysauto) values 
+			(" .
+			$orderid . ", " .
+				$logid . ", " .
+					"'" . $username . "', " .
+						"'" . $counterparty . "', " .
+							"'" . $isin . "', " .
+								"'" . $side . "', " .
+									"'" . $quotetype . "', " .
+										"" . $size. ", " .
+											"" . $price . ", " .
+												"'" . $time_1 . "', " .
+													"'" . $ordertype[2] . "', " .
+														"'" . $ordertype[0] . "', " .
+															"'" . $ordertype[3] . "', " .
+																"'" . $ordertype[1] . "', " .
+																	"'" . $thereason . $logid . "'" .
+																		", 1 )";
 		} else {
 			$thereason = 'add-';
+			$sql = "insert into orderstemp (orderid, logid, username, counterparty, isin, 
+			side, quotetype, size, price, ordertime, ordertype, 
+			timeinforce, filltype, anonymity,  action) values 
+			(" .
+			$orderid . ", " .
+				$logid . ", " .
+					"'" . $username . "', " .
+						"'" . $counterparty . "', " .
+							"'" . $isin . "', " .
+								"'" . $side . "', " .
+									"'" . $quotetype . "', " .
+										"" . $size. ", " .
+											"" . $price . ", " .
+												"'" . $time_1 . "', " .
+													"'" . $ordertype[2] . "', " .
+														"'" . $ordertype[0] . "', " .
+															"'" . $ordertype[3] . "', " .
+																"'" . $ordertype[1] . "', " .
+																	"'" . $thereason . $logid . "'" .
+																		" )";
 		}
-		$sql = "insert into orderstemp (orderid, logid, username, counterparty, isin, 
-		side, quotetype, size, price, ordertime, ordertype, 
-		timeinforce, filltype, anonymity,  action) values 
-		(" .
-		$orderid . ", " .
-			$logid . ", " .
-				"'" . $username . "', " .
-					"'" . $counterparty . "', " .
-						"'" . $isin . "', " .
-							"'" . $side . "', " .
-								"'" . $quotetype . "', " .
-									"" . $size. ", " .
-										"" . $price . ", " .
-											"'" . $time_1 . "', " .
-												"'" . $ordertype[2] . "', " .
-													"'" . $ordertype[0] . "', " .
-														"'" . $ordertype[3] . "', " .
-															"'" . $ordertype[1] . "', " .
-																"'" . $thereason . $logid . "'" .
-																	" )";
+
 	}
 	$rs = EMBXDB::get()->query($sql);
 }
@@ -533,38 +577,19 @@ function embx_order_cancel($time_1, $user, $counterparty, $content, $logid){
 	} else {
 		
 		if ($ordertype[0] == "FoK"){
-			$sqlupdate = "update orderstemp set endtime = '" . $time_1 . 
+			if (isset($id[0]["id"])) {
+				$sqlupdate  = "update orderstemp set endtime = '" . $time_1 . 
 					"', reason = 'expire-" . $logid . "' where id = " . $id[0]["id"];
-			
-/*			$sql = "insert into orderstemp (orderid, logid, username, counterparty, isin, side, 
-					quotetype, size, price, ordertime, ordertype, 
-					timeinforce, filltype, anonymity, action) values 
-					(" .
-					$orderid . ", " .
-					$logid . ", " .
-					"'" . $user1 . "', " .
-					"'" . $cpty1 . "', " .
-					"'" . $isin . "', " .
-					"'" . $side . "', " .
-					"'" . $quotetype . "', " .
-					"" . $size. ", " .
-					"" . $price . ", " .
-					"'" . $time_1 . "', " .
-					"'" . $ordertype[2] . "', " .
-					"'" . $ordertype[0] . "', " .
-					"'" . $ordertype[3] . "', " .
-					"'" . $ordertype[1] . "', " .
-					"'" . "traderemain" . "'" .
-					" )";
-			$rs = EMBXDB::get()->query($sql);
-		*/
+				$rs         = EMBXDB::get()->query($sqlupdate);
+			}
 		}
 		else {
-			$sqlupdate = "update orderstemp set endtime = '" . $time_1 . 
+			if (isset($id[0]["id"])) {
+				$sqlupdate  = "update orderstemp set endtime = '" . $time_1 . 
 					"', reason = 'syspull-" . $logid . "' where id = " . $id[0]["id"];
-			
-		}
-		$rs = EMBXDB::get()->query($sqlupdate);
+				$rs         = EMBXDB::get()->query($sqlupdate);
+			}
+		}		
 	}
 }
 
@@ -605,13 +630,14 @@ function embx_tradeinfo($time_1, $user, $counterparty, $content, $logid){
 	$quotetype = substr($content, $beg+1,5);
 	
 	$check = embx_sql("select * from trades where tradeid = " . $tradeid);
-	if ($side == "BUY") { $side = 'buyer';} else { $side = 'seller';}
+	if ($side == "BUY") {   // We record market snapshot here - not twice
+		$side = 'buyer';
+		$snapshot = embx_recordsnapshot("TRADE",$check[0]["tradeid"],$isin, $time_1);
+	} else { $side = 'seller';}
 	if ($check){
 		$sql = "update trades set " . $side . "='" . $user . "', " . $role . "='" . $user . "' where tradeid = " . $check[0]["tradeid"];
 		$rs = EMBXDB::get()->query($sql);
 	} else {
-		$sql = "update trades set " . $side . "='" . $user . "', " . $role . "='" . $user . "' 
-			where tradeid = " . $check[0]["tradeid"];
 		$sql = "insert into trades (tradeid, logid, " . $role . ", " . $side . ",  
 				isin,  quotetype, size, price, tradetime, currency) values 
 			(" .
@@ -629,68 +655,7 @@ function embx_tradeinfo($time_1, $user, $counterparty, $content, $logid){
 	$rs = EMBXDB::get()->query($sql);
 }
 
-/*
-function embx_tradeinfo($time_1, $user, $counterparty, $content, $logid){
-	$beg = strpos($content, 'trade');
-	$end = strpos($content, ']');
-	$tradeid = substr($content, $beg+6,$end-$beg-6);
-	
-	$beg = strpos($content, 'User');
-	$end = strpos($content, '(');
-	$user = substr($content, $beg+5,$end-$beg-6);
-	
-	$beg = strpos($content, '<');
-	$end = strpos($content, 'S>');
-	$side = substr($content, $beg+1,$end-$beg-1);
-	
-	$beg = strpos($content, '(');
-	$end = strpos($content, ')');
-	$role = substr($content, $beg+1,$end-$beg-1);
-	
-	$beg = strpos($content, 'with');
-	$end = strpos($content, '(size');
-	$size = substr($content, $beg+5,$end-$beg-6);
-	
-	$beg = strpos($content, '(ISIN:');
-	$end = strpos($content, ') bonds');
-	$isin = substr($content, $beg+6,$end-$beg-6);
-	
-	$beg = strpos($content, ' in ');
-	$end = strpos($content, ').');
-	$ccy = substr($content, $beg+4,$end-$beg-4);
-	
-	$beg = strpos($content, 'bonds at ');
-	$end = strpos($content, '(', strpos($content, "(ISIN")+1);
-	$price = substr($content, $beg+9,$end-$beg-9);
-	
-	$beg = strpos($content, '(', strpos($content, "(ISIN")+1);
-	$quotetype = substr($content, $beg+1,5);
-	
-	$check = embx_sql("select * from trades where tradeid = " . $tradeid);
-	if ($side == "BUY") { $side = 'buyer';} else { $side = 'seller';}
-	if ($check){
-		$sql = "update trades set " . $side . "='" . $user . "', " . $role . "='" . $user . "' where tradeid = " . $check[0]["tradeid"];
-		$rs = EMBXDB::get()->query($sql);
-	} else {
-		$sql = "update trades set " . $side . "='" . $user . "', " . $role . "='" . $user . "' 
-			where tradeid = " . $check[0]["tradeid"];
-		$sql = "insert into trades (tradeid, logid, " . $role . ", " . $side . ",  
-				isin,  quotetype, size, price, tradetime, currency) values 
-			(" .
-				$tradeid . ", " .
-				$logid . ", " .
-				"'" . $user . "', " .
-				"'" . $user . "', " .
-				"'" . $isin . "', " .
-				"'" . $quotetype . "', " .
-				"" . $size. ", " .
-				"" . $price . ", " .
-				"'" . $time_1 . "', " .
-				"'" . $ccy . "' )";
-	}	
-	$rs = EMBXDB::get()->query($sql);
-}
-*/
+
 function embx_order_cancel_panic($time_1, $user, $counterparty, $content, $logid){
 	$beg = strpos($content, '[');
 	$end = strpos($content, ']');
@@ -716,6 +681,9 @@ function embx_trade_capture($time_1, $user, $counterparty, $content, $logid){
 		$sqlupdate = "update orderstemp set endtime = '" . $time_1 . "', reason = 'trade' where id = " . $id[0]["id"];
 		$rs = EMBXDB::get()->query($sqlupdate);
 	}
+	
+	
+	
 }
 
 function embx_order_update($time_1, $user, $counterparty, $content, $logid, $reasontext = 'update'){
@@ -2229,6 +2197,36 @@ function embx_tradesummaryfortradingmonth($tradingday,$todate = ""){
 }
 
 
+
+	// embx_recordsnapshot("TRADE",$check[0]["tradeid"],$isin, $time_1);
+function embx_recordsnapshot($activity ,$activityid ,$isin, $time_1){
+	$snapshottime = $time_1;
+	
+	$temptablename = "orderstemp";
+	$sql = "select ordertime, price, size, username, side, ordertype from ". 
+		$temptablename." where ordertime > date('" . $snapshottime . 
+			" 00:00:00') and  ordertime <= '" . $snapshottime . 
+		"' and ( endtime >= '" . $snapshottime . "' or isnull(endtime) ) " . 
+		" and isin = '" . $isin . "'  and timeinforce = 'GTC' and sysauto = 0 order by logid asc";
+	
+	$ords = embx_sql($sql);
+	if (count($ords)){
+		foreach ($ords as $ord){
+			$sql = "insert into snapshot 
+				(activity, activityid, user, price, size, ordertype, actiontime, direction) 
+			    values (	'".	$activity ."',
+							".	$activityid .",
+							'".	$ord["username"] ."',
+							".	$ord["price"] .",
+							".	$ord["size"].",
+							'".	$ord["ordertype"]."',
+							'".	$snapshottime ."',
+							'".	$ord["side"]."'  )";
+			$res = embx_sql($sql);
+		}
+	}
+}
+
 function embx_marketstatus($tradingday,$snapshottimeofday,$isin){
 	date_default_timezone_set("UTC");
 	$ret = "";
@@ -2236,7 +2234,8 @@ function embx_marketstatus($tradingday,$snapshottimeofday,$isin){
 	$starttradingday = "'" . $tradingday . " 00:00:00'";
 	$snapshottime = $tradingday . " " . $snapshottimeofday;
 	$temptablename = $isin.uniqid();
-	embx_sql("create table ".$temptablename." select * from orders where date(ordertime) = '".$tradingday."' and isin = '".$isin."'");
+	embx_sql("create table ".$temptablename.
+		" select * from orders where date(ordertime) = '".$tradingday."' and isin = '".$isin."'");
 	
 	
 	//$minutes = $_GET["minutes"];
