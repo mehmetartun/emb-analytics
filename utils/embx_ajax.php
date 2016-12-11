@@ -108,8 +108,10 @@ switch ($pagefunction) {
 			foreach ($bonds as $bond){
 				if ($bond["isin"]){
 					$bondname = embx_getbondname_fromisin($bond["isin"],$bondnames);
-					echo "<li><a href='javascript:embx_getbonddetailforday(\"" . $bond["isin"] . "\",\"" . $_GET["tradingday"]  . "\")'>" . $bondname . "</a>
-						&nbsp;&nbsp; <a href='javascript:embx_graphmarket(\"" . $bond["isin"] . "\",\"" . $_GET["tradingday"]  . "\")'><i class='fi-graph-trend'></i></a></li>";
+					echo "<li><a href='javascript:embx_getbonddetailforday(\"" . $bond["isin"] . 
+						"\",\"" . $_GET["tradingday"]  . "\")'>" . $bondname . "</a>
+						&nbsp;&nbsp; <a href='javascript:embx_graphmarket(\"" . $bond["isin"] . 
+					"\",\"" . $_GET["tradingday"]  . "\")'><i class='fi-graph-trend'></i></a></li>";
 				}
 			}
 			echo "</ul>";
@@ -123,7 +125,8 @@ switch ($pagefunction) {
 			echo "<ul>";
 			foreach ($bonds as $bond){
 				if ($bond["isin"]){
-					echo "<li><a href='javascript:embx_getbonddetailforday(\"" . $bond["isin"] . "\",\"" . $_GET["tradingday"]  . "\")'>" . $bond["isin"] . "</a>
+					echo "<li><a href='javascript:embx_getbonddetailforday(\"" . $bond["isin"] .
+						 "\",\"" . $_GET["tradingday"]  . "\")'>" . $bond["isin"] . "</a>
 						</li>";
 				}
 			}
@@ -138,7 +141,8 @@ switch ($pagefunction) {
 				echo "<ul>";
 				foreach ($bonds as $bond){
 					if ($bond["isin"]){
-						echo "<li><a href='javascript:embx_getbonddetailforday(\"" . $bond["isin"] . "\",\"" . $_GET["tradingday"]  . "\")'>" . $bond["isin"] . "</a></li>";
+						echo "<li><a href='javascript:embx_getbonddetailforday(\"" . $bond["isin"] .
+							 "\",\"" . $_GET["tradingday"]  . "\")'>" . $bond["isin"] . "</a></li>";
 					}
 				}
 				echo "</ul>";
@@ -393,7 +397,7 @@ switch ($pagefunction) {
 										<td></td>
 										<td></td>
 										<td><span class='label'><? echo number_format($asklive[$j]["price"],4);?></td>
-										<td><? echo $asklive[$j]["size"];?></td>
+										<td><? echo number_format($asklive[$j]["size"],0);?></td>
 										<td><? echo $asklive[$j]["username"];?></td>
 									</tr>
 								<?
